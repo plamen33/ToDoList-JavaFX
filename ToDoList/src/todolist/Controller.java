@@ -5,6 +5,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import todolist.datamodel.ToDoItem;
+import todolist.datamodel.ToDoData;
 import javafx.scene.control.Label;
 import java.time.format.DateTimeFormatter;
 import javafx.beans.value.ChangeListener;
@@ -28,19 +29,20 @@ public class Controller {
     private Label deadlineLabel;
 
        public void initialize(){
-           ToDoItem item1 = new ToDoItem("Learn Java", "Do it every day", LocalDate.of(2017, Month.APRIL, 25));
-           ToDoItem item2 = new ToDoItem("Learn Spring", "Do it almost every day when you can", LocalDate.of(2017, Month.MAY, 27));
-           ToDoItem item3 = new ToDoItem("Do your homeworks", "Homeworks should be done precisely", LocalDate.of(2017, Month.APRIL, 27));
-           ToDoItem item4 = new ToDoItem("Go to the shop", "Buy what is needed and spare no unnecessary money", LocalDate.of(2017, Month.APRIL, 12));
-           ToDoItem item5 = new ToDoItem("Celebrate national holiday", "Celebrate our national holiday at 3 of March", LocalDate.of(2017, Month.MARCH, 3));
+//           ToDoItem item1 = new ToDoItem("Learn Java", "Do it every day", LocalDate.of(2017, Month.APRIL, 25));
+//           ToDoItem item2 = new ToDoItem("Learn Spring", "Do it almost every day when you can", LocalDate.of(2017, Month.MAY, 27));
+//           ToDoItem item3 = new ToDoItem("Do your homeworks", "Homeworks should be done precisely", LocalDate.of(2017, Month.APRIL, 27));
+//           ToDoItem item4 = new ToDoItem("Go to the shop", "Buy what is needed and spare no unnecessary money", LocalDate.of(2017, Month.APRIL, 12));
+//           ToDoItem item5 = new ToDoItem("Celebrate national holiday", "Celebrate our national holiday at 3 of March", LocalDate.of(2017, Month.MARCH, 3));
+//
+//           toDoItems = new ArrayList<ToDoItem>();
+//           toDoItems.add(item1);
+//           toDoItems.add(item2);
+//           toDoItems.add(item3);
+//           toDoItems.add(item4);
+//           toDoItems.add(item5);
 
-           toDoItems = new ArrayList<ToDoItem>();
-           toDoItems.add(item1);
-           toDoItems.add(item2);
-           toDoItems.add(item3);
-           toDoItems.add(item4);
-           toDoItems.add(item5);
-
+           //           ToDoData.getInstance().setToDoItems(toDoItems); // here we create the file which will store the data from the ToDo items // this is a temp file
            toDoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoItem>() {
                @Override
                public void changed(ObservableValue<? extends ToDoItem> observable, ToDoItem oldValue, ToDoItem newValue) {
@@ -53,7 +55,7 @@ public class Controller {
                }
            });
 
-           toDoListView.getItems().setAll(toDoItems);
+           toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItems());
            toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
            toDoListView.getSelectionModel().selectFirst();
 

@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import todolist.datamodel.ToDoData;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -20,5 +23,24 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+    @Override
+    public  void stop() throws Exception{
+        try {
+            ToDoData.getInstance().storeToDoItems();
+        }
+        catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    @Override
+    public void init() throws Exception {
+        try {
+            ToDoData.getInstance().loadToDoItems();
+
+        } catch(Exception e) {
+            System.out.println("Big Crash right now - Catch is taking it");
+            System.out.println(e.getMessage());
+        }
     }
 }
