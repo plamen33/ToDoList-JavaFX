@@ -31,6 +31,9 @@ public class ToDoData {
     public List<ToDoItem> getToDoItems() {
         return toDoItems;
     }
+    public void addToDoItem(ToDoItem item) {
+        toDoItems.add(item);
+    }
 //    public void setToDoItems(List<ToDoItem> toDoItems){  // we need this only run the application and then close it to save the hard coded items
 //        this.toDoItems = toDoItems;
 //    }   // this was used for the hard coded items we defined initially
