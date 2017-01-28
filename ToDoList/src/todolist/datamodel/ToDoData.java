@@ -15,14 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
-
-// Commit 3
-// 1/ Created a class ToDoData to store the ToDo items in a text file
-// 2/ prepared a method to initialize and get the ToDo items from the text file and load them to the ToDo instance
-// 3/  commented the hardcoded ToDo items which we loainitially loaded
-// 4/ Created menu at the top of the Window with New ToDo Item and Exit - they still does not work
-
-
 public class ToDoData {
     private static ToDoData instance = new ToDoData();
     private static String filename = "ToDoListItems.txt";
@@ -77,22 +69,24 @@ public class ToDoData {
 
     }  // end of loadToDoItems
 
-    public void storeToDoItems() throws IOException{   // writes data of todo items to a file
+    public void storeToDoItems() throws IOException {   // writes data of todo items to a file
         Path path = Paths.get(filename);
         BufferedWriter bw = Files.newBufferedWriter(path);
-        try{
+        try {
             Iterator<ToDoItem> iter = toDoItems.iterator();
-            while(iter.hasNext()){
+            while (iter.hasNext()) {
                 ToDoItem item = iter.next();
-                bw.write(String.format("%s\t%s\t%s", item.getShortDescription(),item.getDetails(), item.getDeadline().format(formatter)));
+                bw.write(String.format("%s\t%s\t%s", item.getShortDescription(), item.getDetails(), item.getDeadline().format(formatter)));
                 bw.newLine();
             }
-        }
-        finally {
-            if(bw!=null){
+        } finally {
+            if (bw != null) {
                 bw.close();
             }
         }
-
     }
+        public void deleteToDoItem(ToDoItem item){
+            toDoItems.remove(item);
+        }
+
 }

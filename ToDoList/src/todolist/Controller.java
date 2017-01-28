@@ -1,21 +1,21 @@
 package todolist;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import todolist.datamodel.ToDoData;
 import todolist.datamodel.ToDoItem;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,22 +34,20 @@ public class Controller {
 
     @FXML
     private BorderPane mainBorderPane;
+    @FXML
+    private ContextMenu listContextMenu;
 
     public void initialize(){
-//           ToDoItem item1 = new ToDoItem("Learn Java", "Do it every day", LocalDate.of(2017, Month.APRIL, 25));
-//           ToDoItem item2 = new ToDoItem("Learn Spring", "Do it almost every day when you can", LocalDate.of(2017, Month.MAY, 27));
-//           ToDoItem item3 = new ToDoItem("Do your homeworks", "Homeworks should be done precisely", LocalDate.of(2017, Month.APRIL, 27));
-//           ToDoItem item4 = new ToDoItem("Go to the shop", "Buy what is needed and spare no unnecessary money", LocalDate.of(2017, Month.APRIL, 12));
-//           ToDoItem item5 = new ToDoItem("Celebrate national holiday", "Celebrate our national holiday at 3 of March", LocalDate.of(2017, Month.MARCH, 3));
-//
-//           toDoItems = new ArrayList<ToDoItem>();
-//           toDoItems.add(item1);
-//           toDoItems.add(item2);
-//           toDoItems.add(item3);
-//           toDoItems.add(item4);
-//           toDoItems.add(item5);
-//
-//           ToDoData.getInstance().setToDoItems(toDoItems); // here we create the file which will store the data from the ToDo items // this is a temp file
+        listContextMenu = new ContextMenu();
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ToDoItem item = toDoListView.getSelectionModel().getSelectedItem();
+                deleteItem(item);
+            }
+        });
+        listContextMenu.getItems().addAll(deleteMenuItem);
 
         toDoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoItem>() {
             @Override
@@ -67,6 +65,44 @@ public class Controller {
         toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         toDoListView.getSelectionModel().selectFirst();
 
+        /// we use the JavaFX cell factory to paint a cell when we have deadline today, 1 day before and dates in the past
+        toDoListView.setCellFactory(new Callback<ListView<ToDoItem>, ListCell<ToDoItem>>() {
+            @Override
+            public ListCell<ToDoItem> call(ListView<ToDoItem> param) {
+                ListCell<ToDoItem> cell = new ListCell<ToDoItem>(){
+                    @Override
+                    protected void updateItem(ToDoItem item, boolean empty){
+                        super.updateItem(item, empty);
+                        if(empty){
+                            setText(null);
+                        }
+                        else{
+                            setText(item.getShortDescription());
+                            if(item.getDeadline().equals(LocalDate.now())){
+                                setTextFill(Color.ORANGE);
+                            }
+                            else if(item.getDeadline().equals(LocalDate.now().plusDays(1))){
+                                setTextFill(Color.BLUEVIOLET);
+                            }
+                            else if(item.getDeadline().isBefore(LocalDate.now())){
+                                setTextFill(Color.RED);
+
+                            }
+                        }
+                    }
+                };
+
+                cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                    if(isNowEmpty){
+                        cell.setContextMenu(null);
+                    }
+                    else{
+                        cell.setContextMenu(listContextMenu);
+                    }
+                });
+                return cell;
+            }
+        });
     }
     @FXML
     public void showNewItemDialog(){
@@ -99,14 +135,16 @@ public class Controller {
         ToDoItem item = toDoListView.getSelectionModel().getSelectedItem();
         itemDetailsTextArea.setText(item.getDetails());
         deadlineLabel.setText(item.getDeadline().toString());
-        // System.out.println("The selected item is " + item);
-//           StringBuilder sb = new StringBuilder(item.getDetails());
-//           itemDetailsTextArea.setText(item.getDetails());
-//           sb.append("\n\n\n\n");
-//           sb.append("Due: ");
-//           sb.append(item.getDeadline().toString());
-//           itemDetailsTextArea.setText(sb.toString());
-
+    }
+    public void deleteItem(ToDoItem item){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete ToDo Item");
+        alert.setHeaderText("Delete item: " + item.getShortDescription());
+        alert.setContentText("Are you sure? Press OK to confirm, or Cancel to back out");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent()&& (result.get() == ButtonType.OK)){
+            ToDoData.getInstance().deleteToDoItem(item);
+        }
     }
 
 
