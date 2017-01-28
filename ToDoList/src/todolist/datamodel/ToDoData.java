@@ -1,6 +1,7 @@
 package todolist.datamodel;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,13 +13,21 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
+
+
+// Commit 3
+// 1/ Created a class ToDoData to store the ToDo items in a text file
+// 2/ prepared a method to initialize and get the ToDo items from the text file and load them to the ToDo instance
+// 3/  commented the hardcoded ToDo items which we loainitially loaded
+// 4/ Created menu at the top of the Window with New ToDo Item and Exit - they still does not work
 
 
 public class ToDoData {
     private static ToDoData instance = new ToDoData();
     private static String filename = "ToDoListItems.txt";
 
-    private List<ToDoItem> toDoItems;
+    private ObservableList<ToDoItem> toDoItems;  // changed to ObservableList
     private DateTimeFormatter formatter;  // to manipulate the date
 
     public static ToDoData getInstance(){     // to access data we have to go through this
@@ -28,9 +37,10 @@ public class ToDoData {
         // (We cannot instantiate a new object from this class by any other means essentially)
         formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
-    public List<ToDoItem> getToDoItems() {
+    public ObservableList<ToDoItem> getToDoItems() {   // changed to ObservableList
         return toDoItems;
     }
+
     public void addToDoItem(ToDoItem item) {
         toDoItems.add(item);
     }

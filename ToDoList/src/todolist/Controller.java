@@ -28,12 +28,14 @@ public class Controller {
 
     @FXML
     private ListView<ToDoItem> toDoListView;
+
     @FXML
     private Label deadlineLabel;
+
     @FXML
     private BorderPane mainBorderPane;
 
-       public void initialize(){
+    public void initialize(){
 //           ToDoItem item1 = new ToDoItem("Learn Java", "Do it every day", LocalDate.of(2017, Month.APRIL, 25));
 //           ToDoItem item2 = new ToDoItem("Learn Spring", "Do it almost every day when you can", LocalDate.of(2017, Month.MAY, 27));
 //           ToDoItem item3 = new ToDoItem("Do your homeworks", "Homeworks should be done precisely", LocalDate.of(2017, Month.APRIL, 27));
@@ -46,29 +48,32 @@ public class Controller {
 //           toDoItems.add(item3);
 //           toDoItems.add(item4);
 //           toDoItems.add(item5);
+//
+//           ToDoData.getInstance().setToDoItems(toDoItems); // here we create the file which will store the data from the ToDo items // this is a temp file
 
-           //           ToDoData.getInstance().setToDoItems(toDoItems); // here we create the file which will store the data from the ToDo items // this is a temp file
-           toDoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoItem>() {
-               @Override
-               public void changed(ObservableValue<? extends ToDoItem> observable, ToDoItem oldValue, ToDoItem newValue) {
-                   if(newValue!=null){
-                       ToDoItem item = toDoListView.getSelectionModel().getSelectedItem(); // we show the details of 1st item
-                       itemDetailsTextArea.setText(item.getDetails());         // we show the details of 1st item
-                       DateTimeFormatter df = DateTimeFormatter.ofPattern("MMMM d, yyyy");  // to format the date outlook
-                       deadlineLabel.setText(df.format(item.getDeadline()));  // we show the deadline
-                   }
-               }
-           });
+        toDoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoItem>() {
+            @Override
+            public void changed(ObservableValue<? extends ToDoItem> observable, ToDoItem oldValue, ToDoItem newValue) {
+                if(newValue!=null){
+                    ToDoItem item = toDoListView.getSelectionModel().getSelectedItem(); // we show the details of 1st item
+                    itemDetailsTextArea.setText(item.getDetails());         // we show the details of 1st item
+                    DateTimeFormatter df = DateTimeFormatter.ofPattern("MMMM d, yyyy");  // to format the date outlook
+                    deadlineLabel.setText(df.format(item.getDeadline()));  // we show the deadline
+                }
+            }
+        });
 
-           toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItems());
-           toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-           toDoListView.getSelectionModel().selectFirst();
+        toDoListView.setItems(ToDoData.getInstance().getToDoItems());  // we bind the toDoListView to Observable list in ToDoData
+        toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        toDoListView.getSelectionModel().selectFirst();
 
-       }
+    }
     @FXML
     public void showNewItemDialog(){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Add new ToDo item");  // title for the new item screen window
+        dialog.setHeaderText("Use this dialog to create a new window");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("todoItemDialog.fxml"));
         try{
@@ -84,13 +89,12 @@ public class Controller {
         Optional<ButtonType> result = dialog.showAndWait();
         if(result.isPresent()&& result.get() == ButtonType.OK){
             DialogController controller = fxmlLoader.getController();
-            controller.processResults();
-            System.out.println("OK pressed");
-        }
-        else{
-            System.out.println("Cancel pressed");
+            ToDoItem newItem = controller.processResults();  /// we do this in order to select new item
+            //we do not need that any more         toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItems()); // this will make our item to be added in our list visually not after restart as previously
+            toDoListView.getSelectionModel().select(newItem); ///// we do this in order to select new item
         }
     }
+
     public void handleClickListView(){
         ToDoItem item = toDoListView.getSelectionModel().getSelectedItem();
         itemDetailsTextArea.setText(item.getDetails());

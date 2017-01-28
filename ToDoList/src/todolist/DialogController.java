@@ -11,9 +11,6 @@ import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 
-//Commit4:
-//        Created a new fxml file which is needed to create a new ToDo item from the GUI-->
-//        Created a new Dialog Controller which will control the new GUI - todoItemDialog
 
 public class DialogController {
     @FXML
@@ -25,12 +22,14 @@ public class DialogController {
     @FXML
     private DatePicker deadlinePicker;
 
-    public void processResults() {
+    public ToDoItem processResults() {
         String shortDescription = shortDescriptionField.getText().trim();
         String details = detailsArea.getText().trim();
         LocalDate deadlineValue = deadlinePicker.getValue();
 
-        ToDoData.getInstance().addToDoItem(new ToDoItem(shortDescription, details, deadlineValue));
+        ToDoItem newItem = new ToDoItem(shortDescription, details, deadlineValue); // we do this to select a newly created item
+        ToDoData.getInstance().addToDoItem(newItem);//// we do this to select a newly created item
+        return newItem;
     }
 
 }
