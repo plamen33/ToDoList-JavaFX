@@ -1,7 +1,10 @@
 package todolist;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,8 +19,10 @@ import todolist.datamodel.ToDoItem;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Controller {
 
@@ -36,6 +41,16 @@ public class Controller {
     private BorderPane mainBorderPane;
     @FXML
     private ContextMenu listContextMenu;
+    @FXML
+    private ToggleButton filterToggleButton;
+    @FXML
+    private ToggleButton filterToggleButton1;
+
+    private FilteredList<ToDoItem> filteredList;
+
+    private Predicate<ToDoItem> showAllItems;
+    private Predicate<ToDoItem> showTodaysItems;
+    private Predicate<ToDoItem> showOldItems;
 
     public void initialize(){
         listContextMenu = new ContextMenu();
@@ -60,8 +75,35 @@ public class Controller {
                 }
             }
         });
+        showAllItems = new Predicate<ToDoItem>() {
+            @Override
+            public boolean test(ToDoItem toDoItem) {
+                return true;
+            }
+        };
+        showTodaysItems = new Predicate<ToDoItem>() {
+            @Override
+            public boolean test(ToDoItem toDoItem) {
+                return (toDoItem.getDeadline().equals(LocalDate.now()));
+            }
+        };
+        showOldItems = new Predicate<ToDoItem>() {
+            @Override
+            public boolean test(ToDoItem toDoItem) {
+                return (toDoItem.getDeadline().isBefore(LocalDate.now()));
+            }
+        };
+        filteredList = new FilteredList<ToDoItem>(ToDoData.getInstance().getToDoItems(), showAllItems);
+        // we use this to sort the items from first to last based on deadline
+        SortedList<ToDoItem> sortedList = new SortedList<ToDoItem>(filteredList, new Comparator<ToDoItem>() {
+            @Override
+            public int compare(ToDoItem o1, ToDoItem o2) {
+                return o1.getDeadline().compareTo(o2.getDeadline());
+            }
+        });
 
-        toDoListView.setItems(ToDoData.getInstance().getToDoItems());  // we bind the toDoListView to Observable list in ToDoData
+        toDoListView.setItems(sortedList); // we use this to sort the items from first to last based on deadline
+        // toDoListView.setItems(ToDoData.getInstance().getToDoItems());  // we bind the toDoListView to Observable list in ToDoData
         toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         toDoListView.getSelectionModel().selectFirst();
 
@@ -146,6 +188,51 @@ public class Controller {
             ToDoData.getInstance().deleteToDoItem(item);
         }
     }
-
+    @FXML
+    public void handleFilterButton(){
+        ToDoItem selectedItem = toDoListView.getSelectionModel().getSelectedItem();
+        if(filterToggleButton.isSelected()){
+            filteredList.setPredicate(showTodaysItems);
+            if(filteredList.isEmpty()){
+                itemDetailsTextArea.clear();
+                deadlineLabel.setText("");
+            }
+            else if(filteredList.contains(selectedItem)){
+                toDoListView.getSelectionModel().select(selectedItem);
+            }
+            else{
+                toDoListView.getSelectionModel().selectFirst();
+            }
+        }
+        else{
+            filteredList.setPredicate(showAllItems);
+            toDoListView.getSelectionModel().select(selectedItem);
+        }
+    }
+    @FXML
+    public void handleFilterButtonOld(){
+        ToDoItem selectedItem = toDoListView.getSelectionModel().getSelectedItem();
+        if(filterToggleButton1.isSelected()){
+            filteredList.setPredicate(showOldItems);
+            if(filteredList.isEmpty()){
+                itemDetailsTextArea.clear();
+                deadlineLabel.setText("");
+            }
+            else if(filteredList.contains(selectedItem)){
+                toDoListView.getSelectionModel().select(selectedItem);
+            }
+            else{
+                toDoListView.getSelectionModel().selectFirst();
+            }
+        }
+        else{
+            filteredList.setPredicate(showAllItems);
+            toDoListView.getSelectionModel().select(selectedItem);
+        }
+    }
+    @FXML
+    public void handleExit(){
+        Platform.exit();
+    }
 
 }
