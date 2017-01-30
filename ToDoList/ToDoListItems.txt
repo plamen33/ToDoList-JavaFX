@@ -5,10 +5,7 @@ Go to the shop	Buy some bread and milk	12-04-2017
 Celebrate national holiday	Celebrate our national holiday at 3 of March 2017	03-03-2017
 Tomorrow item	Tomorrow item	31-01-2017
 Go to the museum	Go to the Museum of ancient Bulgarian history	31-01-2017
-Cook some food	Some baked potatoes with broccoli will do fine.
-333	30-01-2017
-Test old item	This item is old, but good :)
-
-03-01-2017	03-01-2017
 Take your certificate	Take your deserved Java certificate.	28-01-2017
 test	1237	10-01-2017
+Cook some food	Some baked potatoes with broccoli will do fine.                                                                                                                  333	30-01-2017
+Test old item	This item is old, but good :)        03-01-2017	03-01-2017
