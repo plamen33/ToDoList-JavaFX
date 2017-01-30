@@ -1,10 +1,13 @@
 Learn Java	Do it every day	25-04-2017
 Learn Spring	Do it almost every day when you can	27-05-2017
 Do your homeworks	Homeworks should be done precisely	27-04-2017
-Go to the shop	Buy what is needed and spare no unnecessary money	12-04-2017
-Celebrate national holiday	Celebrate our national holiday at 3 of March	03-03-2017
+Go to the shop	Buy some bread and milk	12-04-2017
+Celebrate national holiday	Celebrate our national holiday at 3 of March 2017	03-03-2017
 test	123	10-01-2017
 trerjj	123	28-01-2017
-e3e3	e2e3e	29-01-2017
 4rf4r	3r34r	30-01-2017
 r232	r323	03-01-2017
+eqwe	eqeqw	31-01-2017
+eqeq	qeweqwe	31-01-2017
+empty123	123	30-01-2017
+e3e333	333	30-01-2017

@@ -26,7 +26,15 @@
                 <items>
                     <MenuItem text="New ToDo Item" onAction="#showNewItemDialog"/>
                     <SeparatorMenuItem/>
+                    <MenuItem text="Edit ToDo Item" onAction="#showEditItemDialog"/>
+                    <SeparatorMenuItem/>
                     <MenuItem text="Exit" onAction="#handleExit"/>
+                </items>
+            </Menu>
+            <Menu text="Help">
+                <items>
+                    <MenuItem text="About" onAction="#onAbout" />
+                    <MenuItem text="Help" onAction="#onHelp" />
                 </items>
             </Menu>
         </MenuBar>

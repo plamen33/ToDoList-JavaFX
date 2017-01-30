@@ -128,7 +128,6 @@ public class Controller {
                             }
                             else if(item.getDeadline().isBefore(LocalDate.now())){
                                 setTextFill(Color.RED);
-
                             }
                         }
                     }
@@ -170,6 +169,37 @@ public class Controller {
             ToDoItem newItem = controller.processResults();  /// we do this in order to select new item
             //we do not need that any more         toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItems()); // this will make our item to be added in our list visually not after restart as previously
             toDoListView.getSelectionModel().select(newItem); ///// we do this in order to select new item
+        }
+    }
+    @FXML
+    public void showEditItemDialog(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Edit ToDo item");  // title for the new item screen window
+        dialog.setHeaderText("Please edit the ToDo item");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("todoItemDialog.fxml"));
+        try{
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        }
+        catch(IOException e){
+            System.out.println("no edit dialog");
+            e.printStackTrace();
+            return;
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        DialogController controller = fxmlLoader.getController();
+        ToDoItem editToDoItem = toDoListView.getSelectionModel().getSelectedItem();
+        ToDoItem editItem = controller.EditToDoItem(editToDoItem);  /// we do this in order to select edit item
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if(result.isPresent()&& result.get() == ButtonType.OK){
+            controller.UpdateToDoItem(editToDoItem);
+            toDoListView.getSelectionModel().select(editToDoItem); ///// we do this in order to select new item
+            toDoListView.refresh();
+            //  itemDetailsTextArea.redo();
         }
     }
 
@@ -235,4 +265,23 @@ public class Controller {
         Platform.exit();
     }
 
+    @FXML
+    private void onAbout(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("ToDoList JavaFX");
+        alert.setTitle("About");
+        alert.setContentText("ToDoList version: 3\nVersion Release: 30.01.2017\nDevelopment platform: Java\nDeveloper: Plamen Petkov\n\nPowered by Java 8");
+        alert.show();
+
+    }
+    @FXML
+    private void onHelp(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("ToDoList HELP");
+        alert.setTitle("Help");
+        alert.setContentText("To delete a ToDo item select the item and\nclick right mouse button - a Delete button will appear.\nClick and follow the new window options.");
+
+        alert.show();
+
+    }
 }
