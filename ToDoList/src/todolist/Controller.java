@@ -68,10 +68,10 @@ public class Controller {
             @Override
             public void changed(ObservableValue<? extends ToDoItem> observable, ToDoItem oldValue, ToDoItem newValue) {
                 if(newValue!=null){
-                    ToDoItem item = toDoListView.getSelectionModel().getSelectedItem(); // we show the details of 1st item
-                    itemDetailsTextArea.setText(item.getDetails());         // we show the details of 1st item
+                    ToDoItem item = toDoListView.getSelectionModel().getSelectedItem();
+                    itemDetailsTextArea.setText(item.getDetails());
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("MMMM d, yyyy");  // to format the date outlook
-                    deadlineLabel.setText(df.format(item.getDeadline()));  // we show the deadline
+                    deadlineLabel.setText(df.format(item.getDeadline()));
                 }
             }
         });
@@ -94,7 +94,7 @@ public class Controller {
             }
         };
         filteredList = new FilteredList<ToDoItem>(ToDoData.getInstance().getToDoItems(), showAllItems);
-        // we use this to sort the items from first to last based on deadline
+        //  use this to sort the items from first to last based on deadline
         SortedList<ToDoItem> sortedList = new SortedList<ToDoItem>(filteredList, new Comparator<ToDoItem>() {
             @Override
             public int compare(ToDoItem o1, ToDoItem o2) {
@@ -103,11 +103,11 @@ public class Controller {
         });
 
         toDoListView.setItems(sortedList); // we use this to sort the items from first to last based on deadline
-        // toDoListView.setItems(ToDoData.getInstance().getToDoItems());  // we bind the toDoListView to Observable list in ToDoData
+
         toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         toDoListView.getSelectionModel().selectFirst();
 
-        /// we use the JavaFX cell factory to paint a cell when we have deadline today, 1 day before and dates in the past
+        /// use the JavaFX cell factory to paint a cell when we have deadline today, 1 day before and dates in the past
         toDoListView.setCellFactory(new Callback<ListView<ToDoItem>, ListCell<ToDoItem>>() {
             @Override
             public ListCell<ToDoItem> call(ListView<ToDoItem> param) {
@@ -128,6 +128,9 @@ public class Controller {
                             }
                             else if(item.getDeadline().isBefore(LocalDate.now())){
                                 setTextFill(Color.RED);
+                            }
+                            else if(item.getDeadline().isAfter(LocalDate.now().plusDays(1))){
+                                setTextFill(Color.BLACK);
                             }
                         }
                     }
@@ -166,16 +169,15 @@ public class Controller {
         Optional<ButtonType> result = dialog.showAndWait();
         if(result.isPresent()&& result.get() == ButtonType.OK){
             DialogController controller = fxmlLoader.getController();
-            ToDoItem newItem = controller.processResults();  /// we do this in order to select new item
-            //we do not need that any more         toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItems()); // this will make our item to be added in our list visually not after restart as previously
-            toDoListView.getSelectionModel().select(newItem); ///// we do this in order to select new item
-        }
+            ToDoItem newItem = controller.processResults();
+            toDoListView.getSelectionModel().select(newItem);
+    }
     }
     @FXML
     public void showEditItemDialog(){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainBorderPane.getScene().getWindow());
-        dialog.setTitle("Edit ToDo item");  // title for the new item screen window
+        dialog.setTitle("Edit ToDo item");
         dialog.setHeaderText("Please edit the ToDo item");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("todoItemDialog.fxml"));
@@ -192,14 +194,13 @@ public class Controller {
 
         DialogController controller = fxmlLoader.getController();
         ToDoItem editToDoItem = toDoListView.getSelectionModel().getSelectedItem();
-        ToDoItem editItem = controller.EditToDoItem(editToDoItem);  /// we do this in order to select edit item
+        ToDoItem editItem = controller.EditToDoItem(editToDoItem);
 
         Optional<ButtonType> result = dialog.showAndWait();
         if(result.isPresent()&& result.get() == ButtonType.OK){
             controller.UpdateToDoItem(editToDoItem);
             toDoListView.getSelectionModel().select(editToDoItem); ///// we do this in order to select new item
             toDoListView.refresh();
-            //  itemDetailsTextArea.redo();
         }
     }
 
@@ -280,7 +281,6 @@ public class Controller {
         alert.setHeaderText("ToDoList HELP");
         alert.setTitle("Help");
         alert.setContentText("To delete a ToDo item select the item and\nclick right mouse button - a Delete button will appear.\nClick and follow the new window options.");
-
         alert.show();
 
     }

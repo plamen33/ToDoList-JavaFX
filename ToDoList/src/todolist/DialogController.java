@@ -39,8 +39,8 @@ public class DialogController {
             deadlineValue = LocalDate.now();
         }
 
-        ToDoItem newItem = new ToDoItem(shortDescription, details, deadlineValue); // we do this to select a newly created item
-        ToDoData.getInstance().addToDoItem(newItem);//// we do this to select a newly created item
+        ToDoItem newItem = new ToDoItem(shortDescription, details, deadlineValue);
+        ToDoData.getInstance().addToDoItem(newItem);
         return newItem;
     }
     public ToDoItem EditToDoItem(ToDoItem editToDoItem){

@@ -64,9 +64,8 @@
         </ToolBar>
     </VBox>
     </top>
-    <!--created left part of the view-->
+
     <left>
-        <!--<ListView fx:id="toDoListView" onMouseClicked="#handleClickListView">-->
         <ListView fx:id="toDoListView" >
 
         </ListView>

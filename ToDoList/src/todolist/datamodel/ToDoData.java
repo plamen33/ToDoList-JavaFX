@@ -19,14 +19,13 @@ public class ToDoData {
     private static ToDoData instance = new ToDoData();
     private static String filename = "ToDoListItems.txt";
 
-    private ObservableList<ToDoItem> toDoItems;  // changed to ObservableList
-    private DateTimeFormatter formatter;  // to manipulate the date
+    private ObservableList<ToDoItem> toDoItems;
+    private DateTimeFormatter formatter;
 
     public static ToDoData getInstance(){     // to access data we have to go through this
         return instance;
     }
-    private ToDoData(){ // we make a private contrsuctor to prevent anyone to make a ne version of this class: ToDoData
-        // (We cannot instantiate a new object from this class by any other means essentially)
+    private ToDoData(){ // we make a private constructor to prevent anyone to make a new version of this class: ToDoData
         formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
     public ObservableList<ToDoItem> getToDoItems() {   // changed to ObservableList
@@ -41,9 +40,6 @@ public class ToDoData {
         toDoItems.add(item);
 
     }
-//    public void setToDoItems(List<ToDoItem> toDoItems){  // we need this only run the application and then close it to save the hard coded items
-//        this.toDoItems = toDoItems;
-//    }   // this was used for the hard coded items we defined initially
 
     public void loadToDoItems() throws IOException{ // load todo items from a file
 
@@ -72,9 +68,9 @@ public class ToDoData {
             }
         }
 
-    }  // end of loadToDoItems
+    }
 
-    public void storeToDoItems() throws IOException {   // writes data of todo items to a file
+    public void storeToDoItems() throws IOException {  
         Path path = Paths.get(filename);
         BufferedWriter bw = Files.newBufferedWriter(path);
         try {
