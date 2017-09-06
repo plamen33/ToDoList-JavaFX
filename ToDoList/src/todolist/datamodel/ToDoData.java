@@ -12,8 +12,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Observable;
+
 
 public class ToDoData {
     private static ToDoData instance = new ToDoData();
@@ -46,17 +45,19 @@ public class ToDoData {
         toDoItems = FXCollections.observableArrayList();  // we use such list here as in the Controller file we have toDoListView.getItems().setAll(toDoItems); and the setAll method requires  ObservableList
         Path path = Paths.get(filename);
         BufferedReader br = Files.newBufferedReader(path);
-
+        StringBuffer sb = new StringBuffer();
         String input;
 
         try{
             while((input = br.readLine()) != null){
-                String[] itemPieces = input.split("\t");
-
+                sb.append(input + "\n");  // when we add \n we keep the formatting of the text - new lines are kept in the description of a task
+            }
+            String[] arrayWithItems = sb.toString().split("%%%%%%%");
+            for (int i = 0; i < arrayWithItems.length; i++) {
+                String[] itemPieces = arrayWithItems[i].split(";;;;;;;"); // we split by the element of item separator
                 String shortDescription = itemPieces[0];
                 String details = itemPieces[1];
-                String dateString = itemPieces[2];
-
+                String dateString = itemPieces[2];;
                 LocalDate date = LocalDate.parse(dateString, formatter);
                 ToDoItem toDoItem = new ToDoItem(shortDescription, details, date);
                 toDoItems.add(toDoItem);
@@ -70,15 +71,16 @@ public class ToDoData {
 
     }
 
-    public void storeToDoItems() throws IOException {  
+    public void storeToDoItems() throws IOException {
         Path path = Paths.get(filename);
         BufferedWriter bw = Files.newBufferedWriter(path);
         try {
             Iterator<ToDoItem> iter = toDoItems.iterator();
             while (iter.hasNext()) {
                 ToDoItem item = iter.next();
-                bw.write(String.format("%s\t%s\t%s", item.getShortDescription(), item.getDetails(), item.getDeadline().format(formatter)));
-                bw.newLine();
+                bw.write(String.format("%s;;;;;;;%s;;;;;;;%s", item.getShortDescription(), item.getDetails(), item.getDeadline().format(formatter)));
+                bw.write("%%%%%%%"); // this is the new item separator
+//                bw.newLine();
             }
         } finally {
             if (bw != null) {

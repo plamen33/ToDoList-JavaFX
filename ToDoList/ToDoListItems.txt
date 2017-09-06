@@ -1,11 +1,27 @@
-Learn Java	Do it every day	25-04-2017
-Learn Spring	Do it almost every day when you can	27-05-2017
-Do your homeworks	Homeworks should be done precisely	27-04-2017
-Go to the shop	Buy some bread and milk	12-04-2017
-Celebrate national holiday	Celebrate our national holiday at 3 of March 2017	03-03-2017
-Tomorrow item	Tomorrow item	31-01-2017
-Go to the museum	Go to the Museum of ancient Bulgarian history	31-01-2017
-Take your certificate	Take your deserved Java certificate.	28-01-2017
-test	1237	10-01-2017
-Cook some food	Some baked potatoes with broccoli will do fine.                                                                                                                  333	30-01-2017
-Test old item	This item is old, but good :)        03-01-2017	03-01-2017
+Creating a thread in Java;;;;;;;
+There are two ways to create a thread in Java:
+1) By extending Thread class.
+2) By implementing Runnable interface.
+
+Actually there is a third way:
+3/ Implement the java.util.concurrent.Callable interface
+		You can create an executor.;;;;;;;03-09-2017%%%%%%%Types in Java;;;;;;;Object type
+
+	byte (-128 to 127): signed 8-bit
+	short (-32,768 to 32,767): signed 16-bit
+
+	int (-2,147,483,648 to 2,147,483,647): signed 32-bit
+	long (-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807): signed 64-bit
+	Floating-point types are:
+
+	float (±1.5 × 10−45 to ±3.4 × 1038)
+	32-bits, precision of 7 digits
+	double (±5.0 × 10−324 to ±1.7 × 10308)
+	64-bits, precision of 15-16 digits;;;;;;;07-09-2017%%%%%%%Client Server FX Project development;;;;;;;Continue to develop the Server Client Fx Chat application
+;;;;;;;12-09-2017%%%%%%%ToDo List item enhancement;;;;;;;Load to github the enhancement of the ToDo list application.;;;;;;;06-09-2017%%%%%%%Test item;;;;;;;Test
+
+	Test One
+
+		Test Two
+
+Test		Three;;;;;;;06-09-2017%%%%%%%
