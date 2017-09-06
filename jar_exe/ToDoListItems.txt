@@ -1,7 +1,0 @@
-Learn Java	Learn java	03-06-2017
-Learn JavaScript	Learn JavaScript now	05-05-2017
-Go to the shop tomorrow	Buy some bread	06-05-2017
-Make a Spring project	Make a Spring project	03-05-2017
-Search for Spring Security Training	Search using popular search engines	27-05-2017
-Buy a new book about Java 8	Search at online bookstores	30-05-2017
-Engage in social activities	Fix the bench	24-05-2017
